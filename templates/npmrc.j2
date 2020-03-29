@@ -1,0 +1,12 @@
+{% if item.registry is defined %}
+registry={{ item.registry }}
+{% endif %}
+{% if item.prefix is defined %}
+prefix={{ item.prefix }}
+{% endif %}
+{% if item.default_scope is defined %}
+scope={{ item.default_scope }}
+{% endif %}
+{% for scope in item.scopes %}
+@{{ scope.name }}:registry={{ scope.registry }}
+{% endfor %}

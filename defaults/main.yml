@@ -1,0 +1,4 @@
+---
+nodejs_version: 12
+nodejs_npm_install_globally: []
+nodejs_npm_config: []

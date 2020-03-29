@@ -1,0 +1,30 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+
+    - name: Run node command
+      shell: "node -e 'console.log(NaN)'"
+      register: test
+
+    - name: Assert result
+      assert:
+        that: "test.stdout == 'NaN'"
+
+    - name: Run nodejs alias
+      shell: "nodejs -e 'console.log(NaN)'"
+      register: test
+
+    - name: Assert result
+      assert:
+        that: "test.stdout == 'NaN'"
+
+    - name: Ping npm registry
+      shell: "npm ping"
+      register: test
+      
+    - name: Assert result
+      assert:
+        that:
+          - "'npm notice PING' in test.stderr"
+          - "'npm notice PONG' in test.stderr"

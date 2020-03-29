@@ -1,0 +1,66 @@
+---
+- name: Set URL for Ubuntu
+  when: ansible_distribution == 'Ubuntu'
+  set_fact:
+    nodejs_url_subdomain: deb
+
+- name: Set URL for CentOS
+  when: ansible_distribution == 'CentOS'
+  set_fact:
+    nodejs_url_subdomain: rpm
+
+  # https://github.com/nodesource/distributions/blob/master/README.md
+- name: Download installation script
+  get_url:
+    url: "https://{{ nodejs_url_subdomain }}.nodesource.com/setup_{{ nodejs_version }}.x"
+    dest: "{{ nodejs_setup_tmp }}"
+
+- name: Run installation script
+  shell: "bash {{ nodejs_setup_tmp }}"
+
+- name: Clean
+  file:
+    path: "{{ nodejs_setup_tmp }}"
+    state: absent
+
+- name: Install for Ubuntu
+  when: ansible_distribution == 'Ubuntu'
+  apt:
+    name: nodejs
+    state: present
+    update_cache: yes
+
+- name: Install for CentOS
+  when: ansible_distribution == 'CentOS'
+  yum:
+    name: nodejs
+    state: present
+    update_cache: yes
+
+- name: Make sure that nodejs alias exists
+  file:
+    src: /usr/bin/node
+    dest: /usr/bin/nodejs
+    state: link
+
+- name: Make sure that newest npm version have been installed
+  npm:
+    name: npm
+    global: yes
+
+- name: Configure npm
+  template:
+    src: "npmrc.j2"
+    dest: "{{ '/' if item.user == 'root' else '/home' }}/{{ item.user }}/.npmrc"
+    mode: 0600
+    owner: "{{ item.user }}"
+  loop: "{{ nodejs_npm_config }}"
+  when: nodejs_npm_config | length > 0
+
+- name: Installing requested global npm packages
+  npm:
+    name: "{{ item }}"
+    global: yes
+    state: present
+  loop: "{{ nodejs_npm_install_globally }}"
+  when: nodejs_npm_install_globally | length > 0

@@ -1,0 +1,27 @@
+---
+galaxy_info:
+  role_name: nodejs
+  author: marverix
+  description: Ansible role that installs Node.js and configures npm
+  license: ISC
+
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+        - xenial
+
+    - name: EL
+      versions:
+        - 7
+
+  galaxy_tags:
+    - npm
+    - nodejs
+    - javascript
+    - scope
+    - registry
+
+dependencies: []
