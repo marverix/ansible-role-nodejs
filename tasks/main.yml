@@ -1,41 +1,55 @@
 ---
-- name: Set URL for Ubuntu
-  when: ansible_distribution == 'Ubuntu'
-  set_fact:
-    nodejs_url_subdomain: deb
+- name: Check if node is already installed
+  command: node --version
+  register: test
+  ignore_errors: yes
+  failed_when: no
+  changed_when: yes
 
-- name: Set URL for CentOS
-  when: ansible_distribution == 'CentOS'
-  set_fact:
-    nodejs_url_subdomain: rpm
+- name: Installation block
+  # if msg is defined, it means that above command failed (node hasn't been found)
+  # else if stdout is defined, it means that node js installed, so we can check
+  # if major version is the same as requested
+  when: test.msg is defined or
+        not (test.stdout | regex_search('^v' + nodejs_version | string))
+  block:
+    - name: Set URL for Ubuntu
+      when: ansible_distribution == 'Ubuntu'
+      set_fact:
+        nodejs_url_subdomain: deb
 
-  # https://github.com/nodesource/distributions/blob/master/README.md
-- name: Download installation script
-  get_url:
-    url: "https://{{ nodejs_url_subdomain }}.nodesource.com/setup_{{ nodejs_version }}.x"
-    dest: "{{ nodejs_setup_tmp }}"
+    - name: Set URL for CentOS
+      when: ansible_distribution == 'CentOS'
+      set_fact:
+        nodejs_url_subdomain: rpm
 
-- name: Run installation script
-  shell: "bash {{ nodejs_setup_tmp }}"
+      # https://github.com/nodesource/distributions/blob/master/README.md
+    - name: Download installation script
+      get_url:
+        url: "https://{{ nodejs_url_subdomain }}.nodesource.com/setup_{{ nodejs_version }}.x"
+        dest: "{{ nodejs_setup_tmp }}"
 
-- name: Clean
-  file:
-    path: "{{ nodejs_setup_tmp }}"
-    state: absent
+    - name: Run installation script
+      command: "bash {{ nodejs_setup_tmp }}"
 
-- name: Install for Ubuntu
-  when: ansible_distribution == 'Ubuntu'
-  apt:
-    name: nodejs
-    state: present
-    update_cache: yes
+    - name: Clean
+      file:
+        path: "{{ nodejs_setup_tmp }}"
+        state: absent
 
-- name: Install for CentOS
-  when: ansible_distribution == 'CentOS'
-  yum:
-    name: nodejs
-    state: present
-    update_cache: yes
+    - name: Install for Ubuntu
+      when: ansible_distribution == 'Ubuntu'
+      apt:
+        name: nodejs
+        state: present
+        update_cache: yes
+
+    - name: Install for CentOS
+      when: ansible_distribution == 'CentOS'
+      yum:
+        name: nodejs
+        state: present
+        update_cache: yes
 
 - name: Make sure that nodejs alias exists
   file:

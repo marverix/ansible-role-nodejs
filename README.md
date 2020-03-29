@@ -1,6 +1,8 @@
 # Ansible Role: Node.js
 
 [![Build Status](https://travis-ci.com/marverix/ansible-role-nodejs.svg?branch=master)](https://travis-ci.com/marverix/ansible-role-nodejs)
+![Ansible Quality Score](https://img.shields.io/ansible/quality/47511)
+![Ansible Role](https://img.shields.io/ansible/role/47511)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](LICENSE)
 
 Ansible role that installs on linux Node.js, npm and optionally does basic npm configuration.
@@ -9,6 +11,7 @@ Ansible role that installs on linux Node.js, npm and optionally does basic npm c
 
 - ✔️ Installing Node.js
   - You can define which version should be installed
+  - Skips if node with requested version is already installed
   - Double-check that the newest version of `npm` is installed
 - ✔️ `npm` configuration
   - Set global registry for an user
@@ -71,7 +74,7 @@ None
     ---
     - hosts: all
       roles:
-        - role: ansible-role-nodejs
+        - role: marverix.nodejs
           vars:
             nodejs_npm_install_globally:
               - mocha
@@ -84,7 +87,7 @@ None
     ---
     - hosts: all
       roles:
-        - role: ansible-role-nodejs
+        - role: marverix.nodejs
           vars:
             nodejs_npm_config:
               - user: root
