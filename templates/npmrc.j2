@@ -7,6 +7,8 @@ prefix={{ item.prefix }}
 {% if item.default_scope is defined %}
 scope={{ item.default_scope }}
 {% endif %}
+{% if item.scopes is defined %}
 {% for scope in item.scopes %}
 @{{ scope.name }}:registry={{ scope.registry }}
 {% endfor %}
+{% endif %}
