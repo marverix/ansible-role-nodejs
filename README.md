@@ -26,6 +26,7 @@ Ansible role that installs on linux Node.js, npm and optionally does basic npm c
 
 - ✔️ Ubuntu 16.04 (Xenial)
 - ✔️ Ubuntu 18.04 (Bionic)
+- ✔️ Ubuntu 20.04 (Focal)
 - ✔️ CentOS 7
 
 ## Requirements
