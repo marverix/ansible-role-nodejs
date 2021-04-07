@@ -18,6 +18,10 @@ platforms:
     image: bitbar/ubupy:bionic
     pre_build_image: true
 
+  - name: ubuntu20
+    image: bitbar/ubupy:focal
+    pre_build_image: true
+
   - name: centos7
     image: pycontribs/centos:7
     pre_build_image: true
