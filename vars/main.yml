@@ -1,2 +1,5 @@
 ---
 nodejs_setup_tmp: /tmp/nodejs_setup.sh
+nodejs_package_ext:
+  Ubuntu: deb
+  CentOS: rpm

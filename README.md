@@ -11,7 +11,6 @@ Ansible role that installs on linux Node.js, npm and optionally does basic npm c
 
 - ✔️ Installing Node.js
   - You can define which version should be installed
-  - Skips if node with requested version is already installed
   - Double-check that the newest version of `npm` is installed
 - ✔️ `npm` configuration
   - Set global registry for an user
@@ -28,6 +27,7 @@ Ansible role that installs on linux Node.js, npm and optionally does basic npm c
 - ✔️ Ubuntu 18.04 (Bionic)
 - ✔️ Ubuntu 20.04 (Focal)
 - ✔️ CentOS 7
+- ✔️ CentOS 8
 
 ## Requirements
 
@@ -37,7 +37,7 @@ None
 
 Variable | Description | Default Value
 --- | --- | ---
-`nodejs_version` | Version of Node.js to be installed | `12`
+`nodejs_version` | Version of Node.js to be installed | `14`
 `nodejs_npm_install_globally` | List of `npm` packages that should be installed globally | `[]`
 `nodejs_npm_config` | List on `npm` configurations - See in section _How to configure npm_ | `[]`
 

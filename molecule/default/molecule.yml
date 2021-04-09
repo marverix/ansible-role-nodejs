@@ -26,6 +26,10 @@ platforms:
     image: pycontribs/centos:7
     pre_build_image: true
 
+  - name: centos8
+    image: pycontribs/centos:8
+    pre_build_image: true
+
 provisioner:
   name: ansible
 
@@ -43,7 +47,7 @@ scenario:
     - create
     - prepare
     - converge
-    # - idempotence
+    - idempotence
     # - side_effect
     - verify
     - cleanup
